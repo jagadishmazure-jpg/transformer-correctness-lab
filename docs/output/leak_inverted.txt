@@ -1,0 +1,9 @@
+mask mode : buggy_inverted_bool
+            BUG: MHA-style mask (True = block) passed to SDPA (True = attend)
+  [LEAK] perturbation: positions_checked=11 max_abs_diff=9.708e-01 first_leak_position=0
+      - output at position <= 0 changed by 1.137e-01 when tokens > 0 changed
+  [LEAK] gradient: positions_checked=11 max_abs_diff=4.236e-01 first_leak_position=0
+      - grad of output[0] wrt inputs > 0 is 9.015e-02
+  [LEAK] kv_cache_vs_full: positions_checked=12 max_abs_diff=5.351e-01 first_leak_position=0
+  verdict  : FUTURE-TOKEN LEAK DETECTED
+

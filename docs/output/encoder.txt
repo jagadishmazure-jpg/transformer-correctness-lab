@@ -1,0 +1,12 @@
+[encoder] change pad-token ids, real-token outputs must not move
+  OK  bug=None         max_diff_real_tokens: 0.000e+00
+  OK  bug=no_pad_mask  max_diff_real_tokens: 5.962e-01
+  OK  bug=query_mask   max_diff_real_tokens: 5.933e-01
+  OK  masked mean pooling diff: 0.000e+00
+  OK  buggy mean pooling (averages pads) diff: 6.938e-01
+[seq2seq] perturb future target tokens / source pads
+  OK  bug=None               future_diff=0.000e+00 src_pad_diff: 0.000e+00
+  OK  bug=no_causal_decoder  future_diff=6.968e-01 src_pad_diff: 0.000e+00
+  OK  bug=cross_ignores_pad  future_diff=0.000e+00 src_pad_diff: 4.811e-01
+
+RESULT: encoder=pass

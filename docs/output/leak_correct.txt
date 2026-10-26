@@ -1,0 +1,7 @@
+mask mode : correct
+            SDPA with bool tril mask (True = attend) - correct
+  [PASS] perturbation: positions_checked=11 max_abs_diff=0.000e+00
+  [PASS] gradient: positions_checked=11 max_abs_diff=0.000e+00
+  [PASS] kv_cache_vs_full: positions_checked=12 max_abs_diff=4.768e-07
+  verdict  : causal (no leak)
+

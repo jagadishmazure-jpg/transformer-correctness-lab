@@ -1,0 +1,72 @@
+mask mode : correct
+            SDPA with bool tril mask (True = attend) - correct
+  [PASS] perturbation: positions_checked=11 max_abs_diff=0.000e+00
+  [PASS] gradient: positions_checked=11 max_abs_diff=0.000e+00
+  [PASS] kv_cache_vs_full: positions_checked=12 max_abs_diff=4.768e-07
+  verdict  : causal (no leak)
+
+mask mode : fused
+            SDPA with is_causal=True (fused kernel path) - correct
+  [PASS] perturbation: positions_checked=11 max_abs_diff=0.000e+00
+  [PASS] gradient: positions_checked=11 max_abs_diff=0.000e+00
+  [PASS] kv_cache_vs_full: positions_checked=12 max_abs_diff=4.768e-07
+  verdict  : causal (no leak)
+
+mask mode : mha_correct
+            nn.MultiheadAttention with bool triu(1) mask (True = block) - correct
+  [PASS] perturbation: positions_checked=11 max_abs_diff=0.000e+00
+  verdict  : causal (no leak)
+
+mask mode : additive_fp32
+            additive -inf mask, softmax upcast to fp32 - correct
+  [PASS] perturbation: positions_checked=11 max_abs_diff=0.000e+00
+  [PASS] gradient: positions_checked=11 max_abs_diff=0.000e+00
+  [PASS] kv_cache_vs_full: positions_checked=12 max_abs_diff=3.576e-07
+  verdict  : causal (no leak)
+
+mask mode : buggy_transpose
+            BUG: upper triangle instead of lower (mask transposed)
+  [LEAK] perturbation: positions_checked=11 max_abs_diff=4.662e-01 first_leak_position=0
+      - output at position <= 0 changed by 1.029e-01 when tokens > 0 changed
+  [LEAK] gradient: positions_checked=11 max_abs_diff=2.779e-01 first_leak_position=0
+      - grad of output[0] wrt inputs > 0 is 8.438e-02
+  [LEAK] kv_cache_vs_full: positions_checked=12 max_abs_diff=5.781e-01 first_leak_position=0
+  verdict  : FUTURE-TOKEN LEAK DETECTED
+
+mask mode : buggy_inverted_bool
+            BUG: MHA-style mask (True = block) passed to SDPA (True = attend)
+  [LEAK] perturbation: positions_checked=11 max_abs_diff=9.708e-01 first_leak_position=0
+      - output at position <= 0 changed by 1.137e-01 when tokens > 0 changed
+  [LEAK] gradient: positions_checked=11 max_abs_diff=4.236e-01 first_leak_position=0
+      - grad of output[0] wrt inputs > 0 is 9.015e-02
+  [LEAK] kv_cache_vs_full: positions_checked=12 max_abs_diff=5.351e-01 first_leak_position=0
+  verdict  : FUTURE-TOKEN LEAK DETECTED
+
+mask mode : buggy_mha_inverted
+            BUG: SDPA-style mask (True = attend) passed to nn.MultiheadAttention
+  [LEAK] perturbation: positions_checked=11 max_abs_diff=inf first_leak_position=0 nan_detected=True
+      - NaN in baseline outputs (fully-masked attention row?)
+      - output at position <= 0 changed by inf when tokens > 0 changed
+  verdict  : FUTURE-TOKEN LEAK DETECTED
+
+mask mode : buggy_off_by_one
+            BUG: tril(diagonal=1) lets each token see the next one
+  [LEAK] perturbation: positions_checked=11 max_abs_diff=4.649e-01 first_leak_position=0
+      - output at position <= 0 changed by 4.649e-01 when tokens > 0 changed
+  [LEAK] gradient: positions_checked=11 max_abs_diff=2.799e-01 first_leak_position=0
+      - grad of output[0] wrt inputs > 0 is 2.799e-01
+  [LEAK] kv_cache_vs_full: positions_checked=12 max_abs_diff=3.379e-01 first_leak_position=0
+  verdict  : FUTURE-TOKEN LEAK DETECTED
+
+mask mode : no_mask
+            BUG: no mask at all (bidirectional attention)
+  [LEAK] perturbation: positions_checked=11 max_abs_diff=2.727e-01 first_leak_position=0
+      - output at position <= 0 changed by 9.672e-02 when tokens > 0 changed
+  [LEAK] gradient: positions_checked=11 max_abs_diff=8.730e-02 first_leak_position=0
+      - grad of output[0] wrt inputs > 0 is 8.730e-02
+  [LEAK] kv_cache_vs_full: positions_checked=12 max_abs_diff=5.762e-01 first_leak_position=0
+  verdict  : FUTURE-TOKEN LEAK DETECTED
+
+summary: 9/9 modes classified as expected
+
+RESULT: leak=pass

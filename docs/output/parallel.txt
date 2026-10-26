@@ -1,0 +1,12 @@
+[parallel] blockwise/ring attention (chunk=6) vs full attention
+  OK  causal=False bug=None         max_diff: 1.907e-06
+  OK  causal=False bug=no_rescale   max_diff: 7.478e+00
+  OK  causal=True  bug=None         max_diff: 1.431e-06
+  OK  causal=True  bug=no_rescale   max_diff: 6.141e+00
+  OK  causal=True  bug=local_causal max_diff: 1.504e+01
+  OK  tensor-parallel heads shards=2 max_diff: 5.960e-07
+  OK  tensor-parallel heads shards=4 max_diff: 7.153e-07
+  OK  batch invariance (1 vs 8 samples) max_diff: 0.000e+00
+  info work/span for T=1024: {'attention_work': 1048576, 'attention_span': 1, 'rnn_work': 1024, 'rnn_span': 1024}
+
+RESULT: parallel=pass

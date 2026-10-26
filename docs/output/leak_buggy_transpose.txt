@@ -1,0 +1,9 @@
+mask mode : buggy_transpose
+            BUG: upper triangle instead of lower (mask transposed)
+  [LEAK] perturbation: positions_checked=11 max_abs_diff=4.662e-01 first_leak_position=0
+      - output at position <= 0 changed by 1.029e-01 when tokens > 0 changed
+  [LEAK] gradient: positions_checked=11 max_abs_diff=2.779e-01 first_leak_position=0
+      - grad of output[0] wrt inputs > 0 is 8.438e-02
+  [LEAK] kv_cache_vs_full: positions_checked=12 max_abs_diff=5.781e-01 first_leak_position=0
+  verdict  : FUTURE-TOKEN LEAK DETECTED
+

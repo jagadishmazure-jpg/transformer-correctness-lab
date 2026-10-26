@@ -1,0 +1,7 @@
+[lora]
+  OK  zero-init B => identical to base, diff: 0.0
+  OK  frozen base weight unchanged after 3 steps: True
+  OK  merge / unmerge equivalence (relative diff): 1.415e-07 / 7.076e-08
+  OK  LoRA on 2 qkv layers keeps causal mask: [PASS] perturbation: positions_checked=9 max_abs_diff=0.000e+00
+
+RESULT: lora=pass

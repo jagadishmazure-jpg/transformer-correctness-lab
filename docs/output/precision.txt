@@ -1,0 +1,4 @@
+fully_masked_row fp16: {'neg_inf_row0': [nan, nan, nan, nan], 'neg_inf_has_nan': True, 'finite_row0': [0.25, 0.25, 0.25, 0.25], 'finite_leaks_to_future': True}
+fully_masked_row bf16: {'neg_inf_row0': [nan, nan, nan, nan], 'neg_inf_has_nan': True, 'finite_row0': [0.25, 0.25, 0.25, 0.25], 'finite_leaks_to_future': True}
+finite_mask_too_small fp16: {'mask_-20_future_weight': 1.0, 'neg_inf_fp32_future_weight': 0.0}
+fp16_min_overflow: {'fp16_min_plus_neg100': -inf, 'is_inf': True}
