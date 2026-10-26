@@ -207,8 +207,11 @@ Maintainer scripts: `python scripts/count_tests.py` (prints the real test count)
 | Module 1 causal leak: perturbation, gradient, KV-cache checks, 9 mask modes, CLI | Built and run |
 | Module 1 padding (left/right, variable length), packing, fp16/bf16 demos | Built and run |
 | Modules 2-5 with tests and CLI subcommands | Built and run |
-| GitHub Actions CI (lint, tests, CLI, docs check, brand check, gitleaks), CodeQL, Dependabot | Written, not run (repo not pushed yet) |
-| Repo rulesets, secret scanning, private vulnerability reporting | Planned (set when the repo is published) |
+| GitHub Actions CI (lint, 88 tests, CLI for all modules, docs check, brand check, gitleaks over full history) | Built and passing on GitHub Actions |
+| CodeQL code scanning | Active (repo is public; runs on push, PRs and weekly) |
+| Dependabot version updates (pip, GitHub Actions) | Configured |
+| Secret scanning, push protection, private vulnerability reporting | Enabled on the public repo |
+| Repo rulesets (no force-push/deletion on `main`, required CI on PRs) | Planned |
 | ONNX / int8 export consistency check | Planned |
 | GPU / real FlashAttention kernel run | Planned |
 | Hooking the leak test to a real open-weights model | Planned (see implementation guide) |
