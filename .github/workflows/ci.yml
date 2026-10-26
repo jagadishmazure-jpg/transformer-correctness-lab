@@ -1,0 +1,42 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        with:
+          python-version: "3.12"
+      - name: Install (CPU-only torch)
+        run: |
+          python -m pip install --upgrade pip==24.3.1
+          pip install -r requirements-ci.txt --extra-index-url https://download.pytorch.org/whl/cpu
+      - name: Lint
+        run: ruff check .
+      - name: Tests (all five modules)
+        run: python -m pytest -v
+      - name: CLI smoke (every module)
+        run: python -m tclab all
+      - name: Docs check (test count + captured outputs regenerated from a real run)
+        run: bash scripts/check_docs.sh
+      - name: Brand-name check (hashed blocklist)
+        run: python scripts/brand_check.py
+  gitleaks:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - name: gitleaks (full history, pinned binary)
+        run: |
+          curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.21.2/gitleaks_8.21.2_linux_x64.tar.gz | tar xz gitleaks
+          ./gitleaks detect --source . --log-opts="--all" --redact -v
