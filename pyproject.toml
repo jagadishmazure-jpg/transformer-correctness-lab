@@ -1,0 +1,22 @@
+[project]
+name = "transformer-correctness-lab"
+version = "0.1.0"
+description = "CPU-only correctness tests for transformer internals: causal mask leaks, padding, parallel attention, position encodings, LoRA."
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Jagadish Meduri" }]
+dependencies = ["torch>=2.2"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.5"]
+
+[tool.setuptools]
+packages = ["leaktest", "tclab"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["ignore::UserWarning"]
+
+[tool.ruff]
+line-length = 130
+target-version = "py310"
